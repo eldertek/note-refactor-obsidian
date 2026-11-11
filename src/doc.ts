@@ -85,8 +85,12 @@ export default class NRDoc {
       const heading = new Array(headingLevel + 1).join('#') + ' ';
       const matches: string[][] = [];
       let headingMatch: string[] = [];
+      let inCodeBlock = false;
       content.forEach((line, i) => {
-        if(line.startsWith(heading)){
+        if (line.trim().startsWith('```')) {
+          inCodeBlock = !inCodeBlock;
+        }
+        if(!inCodeBlock && line.startsWith(heading)){
           if(headingMatch.length > 0) {
             matches.push(headingMatch);
             headingMatch = [];
@@ -94,7 +98,7 @@ export default class NRDoc {
           } else {
             headingMatch.push(line);
           }
-        } else if(headingMatch.length > 0 && !line.startsWith(parentHeading)  ){
+        } else if(headingMatch.length > 0 && (inCodeBlock || !line.startsWith(parentHeading))  ){
           headingMatch.push(line);
         } else if(headingMatch.length > 0) {
           matches.push(headingMatch);

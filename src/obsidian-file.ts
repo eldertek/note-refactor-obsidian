@@ -25,7 +25,7 @@ export default class ObsidianFile {
             path = this.vault.getRoot().path;
             break;
           case Location.SameFolder:
-            path = view.file.parent.path;
+            path = view?.file?.parent?.path || '';
             break;
           case Location.SpecifiedFolder:
             path = this.momentDateRegex.replace(this.settings.customFolder);
@@ -39,7 +39,7 @@ export default class ObsidianFile {
     }
 
     async createOrAppendFile(fileName: string, note: string) {
-      const view = this.app.workspace.activeLeaf.view;
+      const view = this.app.workspace.activeLeaf?.view;
       const folderPath = this.filePath(view);
       const filePath = this.filePathAndFileName(fileName, view);
       //Check if folder exists and create if needed
